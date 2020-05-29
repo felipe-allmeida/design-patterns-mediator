@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DesignPatterns.Mediator.Models
 {
     public class Player : Unit
     {
-        public Player(int health, int damage, ConsoleColor color)
-            : base(health, damage)
+        public Player(string name, int health, int damage, ConsoleColor color)
+            : base(name, health, damage)
         {
             Color = color;
         }

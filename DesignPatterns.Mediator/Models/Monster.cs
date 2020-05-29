@@ -6,10 +6,9 @@ namespace DesignPatterns.Mediator.Models
 {
     public class Monster : Unit
     {
-        public Monster(int health, int damage, int coins)
-            : base(health, damage)
+        public Monster(string name, int health, int damage)
+            : base(name, health, damage)
         {
-            Coins = coins;
         }
 
         public int Coins { get; private set; }
