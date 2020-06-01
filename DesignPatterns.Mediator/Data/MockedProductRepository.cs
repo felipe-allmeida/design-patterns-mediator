@@ -8,7 +8,7 @@ namespace DesignPatterns.Mediator.Data
 {
     public class MockedProductRepository
     {
-        private List<Product> _products;
+        private static List<Product> _products;
 
         public MockedProductRepository(List<Product> products)
         {
@@ -31,6 +31,11 @@ namespace DesignPatterns.Mediator.Data
         public Product GetProduct(string name)
         {
             return _products.FirstOrDefault(x => x.Name == name);
+        }
+
+        public List<Product> GetAll()
+        {
+            return _products;
         }
     }
 }

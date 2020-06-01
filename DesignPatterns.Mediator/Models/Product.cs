@@ -15,6 +15,8 @@ namespace DesignPatterns.Mediator.Models
             Description = description;
             Price = price;
 
+            _errors = new List<string>();
+
             if (string.IsNullOrEmpty(Name))
             {
                 _errors.Add("The field Name cannot be empty");
@@ -37,7 +39,7 @@ namespace DesignPatterns.Mediator.Models
     
         public bool IsValid()
         {
-            return _errors.Any();
+            return !_errors.Any();
         }
 
         public List<string> GetErrors()

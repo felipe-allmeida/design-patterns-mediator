@@ -1,5 +1,6 @@
 ﻿using DesignPatterns.Mediator.Data;
 using DesignPatterns.Mediator.Models;
+using DesignPatterns.Mediator.Notifications;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,35 +10,39 @@ namespace DesignPatterns.Mediator.Services
 {
     public class RegisterService
     {
+        private readonly NotificationHandler _notificationHandler;
         private readonly MockedProductRepository _repository;
-        private List<Product> _products;
 
-        public RegisterService(MockedProductRepository repository)
+        public RegisterService(NotificationHandler notificationHandler, MockedProductRepository repository)
         {
-            _products = new List<Product>();
+            _notificationHandler = notificationHandler;
             _repository = repository;
         }
 
-        public List<string> RegisterProduct(string name, string description, decimal price)
+        public bool RegisterProduct(string name, string description, decimal price)
         {
             var product = new Product(name, description, price);
 
-            if (product.IsValid())
+            if (!product.IsValid())
             {
-                return product.GetErrors();
-            }            
+                foreach(var error in product.GetErrors())
+                {
+                    _notificationHandler.PublishNotification(error);
+                }
+                return false;
+            }
 
-            return new List<string>();
+            return Commit(product);
         }
 
-        private string Commit(Product product)
+        private bool Commit(Product product)
         {
             if (!_repository.AddProduct(product))
             {
-                return "Commit failed";
+                _notificationHandler.PublishNotification("Commit failed");
+                return false;
             }
-
-            return string.Empty;
+            return true;
         }
     }
 }
